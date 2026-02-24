@@ -34,7 +34,7 @@ jobs:
 
       - name: 🤖 Claude Code Review
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.democicdkey }} # TODO: Replace with your Anthropic API key from console! my kkey is democicdkey
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
           REPO_FULL_NAME: ${{ github.repository }}
