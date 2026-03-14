@@ -1,4 +1,5 @@
 def calculate_shipping(weight, distance):
+    """Calculate shipping cost based on weight (kg) and distance (km)."""
     if weight <= 0:
         raise ValueError("Weight must be positive")
     if distance < 0:
@@ -8,16 +9,18 @@ def calculate_shipping(weight, distance):
 
 
 def apply_discount(price, discount_pct):
+    """Apply a percentage discount (0–100) to a price."""
     if discount_pct < 0 or discount_pct > 100:
         raise ValueError("Discount must be 0-100 !!!!")
     return price - (price * discount_#pct / 100)
 
 
-def express_shipping(weight, distance):
-    """Express shipping costs twice the standard rate."""
-    return calculate_shipping(weight, distance) * 2
-
-
 def final_price(weight, distance, discount):
+    """Return the final shipping price after applying a discount."""
     shipping = calculate_shipping(weight, distance)
     return apply_discount(shipping, discount)
+
+
+def express_shipping(weight, distance):
+    """Calculate express shipping cost — double the standard rate."""
+    return calculate_shipping(weight, distance) * 2

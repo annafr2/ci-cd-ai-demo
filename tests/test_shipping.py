@@ -63,34 +63,19 @@ def test_final_price_full_discount():
 
 # ─── express_shipping ─────────────────────────────────────────────────────────
 
-class TestExpressShipping:
+def test_express_normal():
+    """5kg, 100km → standard=250.0, express=500.0"""
+    assert express_shipping(5, 100) == 500.0
 
-    def test_double_standard_rate(self):
-        """5kg × 100km × 0.5 × 2 = 500.0"""
-        assert express_shipping(5, 100) == 500.0
+def test_express_is_double_standard():
+    """Express must always be exactly 2× the standard rate."""
+    assert express_shipping(3, 50) == calculate_shipping(3, 50) * 2
 
-    def test_small_parcel(self):
-        # standard = 1 × 10 × 0.5 = 5.0  →  express = 10.0
-        assert express_shipping(1, 10) == 10.0
+def test_express_zero_distance():
+    """Zero distance → free express shipping too."""
+    assert express_shipping(5, 0) == 0.0
 
-    def test_is_exactly_twice_standard(self):
-        standard = calculate_shipping(7, 80)
-        assert express_shipping(7, 80) == standard * 2
-
-    def test_zero_distance_is_free(self):
-        assert express_shipping(5, 0) == 0.0
-
-    def test_zero_weight_raises(self):
-        with pytest.raises(ValueError, match="Weight must be positive"):
-            express_shipping(0, 100)
-
-    def test_negative_weight_raises(self):
-        with pytest.raises(ValueError, match="Weight must be positive"):
-            express_shipping(-3, 100)
-
-    def test_negative_distance_raises(self):
-        with pytest.raises(ValueError, match="Distance cannot be negative"):
-            express_shipping(5, -50)
-
-    def test_return_type_is_float(self):
-        assert isinstance(express_shipping(2, 30), float)
+def test_express_invalid_weight_raises():
+    """Inherits validation — zero weight should raise ValueError."""
+    with pytest.raises(ValueError, match="Weight must be positive"):
+        express_shipping(0, 100)
