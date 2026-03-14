@@ -11,7 +11,7 @@ def calculate_shipping(weight, distance):
 def apply_discount(price, discount_pct):
     """Apply a percentage discount (0–100) to a price."""
     if discount_pct < 0 or discount_pct > 100:
-        raise ValueError("Discount must be 0-100")
+        raise ValueError("Discount must be 0-100..")
     return price - (price * discount_pct / 100)
 
 
