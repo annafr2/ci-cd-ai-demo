@@ -1,5 +1,5 @@
 import pytest
-from shipping import calculate_shipping, apply_discount, final_price, express_shipping
+from shipping import calculate_shipping, apply_discount, final_price
 
 
 # ─── calculate_shipping ───────────────────────────────────────────────────────
@@ -61,21 +61,3 @@ def test_final_price_full_discount():
     assert final_price(5, 100, 100) == 0.0
 
 
-# ─── express_shipping ─────────────────────────────────────────────────────────
-
-def test_express_normal():
-    """5kg, 100km → standard=250.0, express=500.0"""
-    assert express_shipping(5, 100) == 500.0
-
-def test_express_is_double_standard():
-    """Express must always be exactly 2× the standard rate."""
-    assert express_shipping(3, 50) == calculate_shipping(3, 50) * 2
-
-def test_express_zero_distance():
-    """Zero distance → free express shipping too."""
-    assert express_shipping(5, 0) == 0.0
-
-def test_express_invalid_weight_raises():
-    """Inherits validation — zero weight should raise ValueError."""
-    with pytest.raises(ValueError, match="Weight must be positive"):
-        express_shipping(0, 100)

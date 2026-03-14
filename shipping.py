@@ -20,7 +20,3 @@ def final_price(weight, distance, discount):
     shipping = calculate_shipping(weight, distance)
     return apply_discount(shipping, discount)
 
-
-def express_shipping(weight, distance):
-    """Calculate express shipping cost — double the standard rate."""
-    return calculate_shipping(weight, distance) * 2
