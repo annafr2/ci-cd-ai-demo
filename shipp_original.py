@@ -23,6 +23,6 @@ def apply_discount(price: float, discount_pct: float) -> float:
 
 
 def final_price(weight: float, distance: float, discount: float) -> float:
-    """Calculate final shipping price after discount."""
+    """Calculate final shipping price after discount :) """
     shipping = calculate_shipping(weight, distance)
     return apply_discount(shipping, discount)
