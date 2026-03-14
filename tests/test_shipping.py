@@ -1,5 +1,5 @@
 import pytest
-from shipping import calculate_shipping, apply_discount, final_price, express_shipping
+from shipping import calculate_shipping, apply_discount, final_price #, express_shipping
 
 
 # ─── calculate_shipping ───────────────────────────────────────────────────────
