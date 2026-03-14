@@ -1,18 +1,21 @@
-# ⚠️  DEMO VERSION — intentionally missing input validation
-# For the "break the pipeline" demo:
-#   1. Copy the contents of THIS file into shipping.py
-#   2. git add . && git commit -m "oops" && git push  → watch pipeline go RED ❌
-#   3. Then paste back the original shipping.py contents  → pipeline goes GREEN ✅
-
 def calculate_shipping(weight, distance):
+    """Calculate shipping cost based on weight (kg) and distance (km)."""
+    if weight <= 0:
+        raise ValueError("Weight must be positive")
+    if distance < 0:
+        raise ValueError("Distance cannot be negative")
     rate = 0.5
-    return weight * distance * rate   # BUG: no validation for negative/zero inputs
+    return weight * distance * rate
 
 
 def apply_discount(price, discount_pct):
-    return price - (price * discount_pct / 100)  # BUG: no bounds check on discount
+    """Apply a percentage discount (0–100) to a price."""
+    if discount_pct < 0 or discount_pct > 100:
+        raise ValueError("Discount must be 0-100")
+    return price - (price * discount_pct / 100)
 
 
 def final_price(weight, distance, discount):
+    """Return the final shipping price after applying a discount."""
     shipping = calculate_shipping(weight, distance)
     return apply_discount(shipping, discount)
