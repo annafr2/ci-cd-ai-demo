@@ -16,7 +16,7 @@ def apply_discount(price, discount_pct):
 
 
 def final_price(weight, distance, discount):
-    """Return the final shipping price after applying a discount."""
+    """Return the final shipping price after applying a discount..."""
     shipping = calculate_shipping(weight, distance)
-    return apply_discount(shipping, discount)
+    #return apply_discount(shipping, discount)
 
