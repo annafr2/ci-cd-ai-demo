@@ -1,5 +1,5 @@
 import pytest
-from shipping import calculate_shipping, apply_discount, final_price
+from shipping import calculate_shipping, apply_discount, final_price, express_shipping
 
 
 # ─── calculate_shipping ───────────────────────────────────────────────────────
@@ -61,3 +61,37 @@ def test_final_price_full_discount():
     assert final_price(5, 100, 100) == 0.0
 
 
+# ─── express_shipping ─────────────────────────────────────────────────────────
+
+def test_express_double_price():
+    """Express should cost exactly 2x the standard rate."""
+    standard = calculate_shipping(5, 100)   # 250.0
+    assert express_shipping(5, 100) == standard * 2  # 500.0
+
+def test_express_small_parcel():
+    assert express_shipping(1, 10) == 10.0  # 5.0 * 2
+
+def test_express_zero_distance():
+    assert express_shipping(5, 0) == 0.0
+
+def test_express_negative_weight_raises():
+    with pytest.raises(ValueError, match="Weight must be positive"):
+        express_shipping(0, 100)
+
+
+# ─── final_price (express mode) ───────────────────────────────────────────────
+
+def test_final_price_express_no_discount():
+    # 5kg × 100km × 0.5 × 2 = 500.0, no discount
+    assert final_price(5, 100, 0, express=True) == 500.0
+
+def test_final_price_express_with_discount():
+    # 500.0 with 20% off = 400.0
+    assert final_price(5, 100, 20, express=True) == 400.0
+
+def test_final_price_express_full_discount():
+    assert final_price(5, 100, 100, express=True) == 0.0
+
+def test_final_price_standard_unchanged():
+    """Ensure express=False (default) still works as before."""
+    assert final_price(5, 100, 20) == 200.0
