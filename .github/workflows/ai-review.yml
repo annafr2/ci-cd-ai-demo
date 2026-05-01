@@ -1,0 +1,41 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: pip install anthropic requests
+
+      - name: 🔍 Get PR diff
+        run: |
+          git fetch origin main
+          git diff origin/main...HEAD > /tmp/pr_diff.txt
+          echo "Diff saved ($(wc -l < /tmp/pr_diff.txt) lines)"
+
+      - name: 🤖 Claude Code Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.number }}
+          REPO_FULL_NAME: ${{ github.repository }}
+        run: python .github/scripts/claude_review.py
